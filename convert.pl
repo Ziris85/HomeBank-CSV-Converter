@@ -1,11 +1,22 @@
 #!/usr/bin/env perl
 
+#
+#
+#        HomeBank CSV Converter
+#
+#         Author: Ziris85
+#       Homepage: https://github.com/Ziris85/HomeBank-CSV-Converter
+#        License: GPLv3.0
+#        Version: 0.1
+#
+###########################################
+
 use strict;
 use warnings;
 use Getopt::Long;
 use Text::CSV;
 
-my ($incsv,$csv);
+my ($incsv,$outcsv,$csv);
 my @arrcsv;
 
 ## If no file is provided, print usage
@@ -13,18 +24,6 @@ if ( ! $ARGV[0] || ! -f $ARGV[0]) {
     &usage();
 } else {
     $incsv = shift @ARGV;
-}
-
-## Set the name of our output file
-my $outcsv = $incsv =~ s/.csv$/-homebank-exported.csv/ir;
-if (-f $outcsv) {
-    ## Output file already exists - ask if they wish to continue
-    print "### WARNING ###\nDestination file '$outcsv' already exists! Continue? (This will overwrite the existing file) (Y/n) ";
-    chomp(my $cont = lc(<STDIN>));
-    if ($cont ne "y") {
-        print "Exiting...";
-        exit;
-    }
 }
 
 ## Define our hash array for arguments, with some defaults defined
@@ -36,6 +35,7 @@ if (@ARGV) {
         'sep=s',
         'header=s',
         'autopay=s',
+        'output=s',
         'date=i',
         'payment=i',
         'info=i',
@@ -53,8 +53,8 @@ if (@ARGV) {
 sub usage() {
     ## Print usage of script
 	print "NAME\n    $0 - Homebank CSV Converter\n\nSYNOPSIS\n    $0 file.csv [COLUMNS] [OPTIONS]\n\nDESCRIPTION\n    User-friendly means of converting CSV files from your\n    banking institution to a Homebank-compatible format\n\n    If [COLUMNS] are provided, the script will immediately convert based on\n    those options (good for automation). Otherwise, the script will enter\n    into a guided, interactive mode.\n\n    Each of the [COLUMNS] must be a numerical value (starting from 0, not 1)\n    corresponding to the column number of your CSV that provides that information.\n    Not all [COLUMNS] must be provided - those that are not are simply\n    inserted as empty columns.\n\n   The [OPTIONS] simply tweak defaults of the automated run, if necessary.\n\n";
-    print "COLUMNS\n    --date	Date of transation\n\n    --payment	Payment type code\n\n    --info      A string\n\n    --payee     A payee name\n\n    --memo      A string\n\n    --amount    A number with a '.' or ',' as decimal separator, ex: -24.12 or 36,75\n\n    --category  A full category name (category, or category:subcategory)\n\n    --tags      Tags separated by space\n\n";
-    print "OPTIONS\n    --sep=s         Separator to your CSV file (default: ,)\n\n    --header=[Y|n]  Specify whether your CSV file contains a header (defaut: n)\n\n    --autopay=s     Enable automatic detection of payment codes. This can also be defined\n                    as a code, in which case ALL transactions in your CSV will be marked with said code.\n\n";
+    print "COLUMNS\n    --date	Date of transation\n\n    --payment	Payment type code\n\n    --info      A string\n\n    --payee     A payee name\n\n    --memo      A string (usually a description of the transaction)\n\n    --amount    A number with a '.' or ',' as decimal separator, ex: -24.12 or 36,75\n\n    --category  A full category name (category, or category:subcategory)\n\n    --tags      Tags separated by space\n\n";
+    print "OPTIONS\n    --output=s      Name of file to output results to\n                    (default: <input_file_name> + -homebank-exported.csv)\n\n    --sep=s         Separator to your CSV file (default: ,)\n\n    --header=[Y|n]  Specify whether your CSV file contains a header (defaut: n)\n\n    --autopay=[Y|#]     Enable automatic detection of payment codes. This can also be defined\n                    as a code, in which case ALL transactions in your CSV will be marked with said code.\n\n";
     exit(0);
 }
 
@@ -62,6 +62,23 @@ sub convert() {
     ## Begin conversion process.
     ## homebank array will be populated with our converted data, and be pushed to the output file once finished
     my @homebank;
+
+    ## Set the name of our output file, either automatically or to the users specified file
+    if ($col{'output'}) {
+        $outcsv = $col{'output'};
+    } else {
+        $outcsv = $incsv =~ s/.csv$/-homebank-exported.csv/ir;
+    }
+    
+    if (-f $outcsv) {
+        ## Output file already exists - ask if they wish to continue
+        print "### WARNING ###\nDestination file '$outcsv' already exists! Continue? (This will overwrite the existing file) (Y/n) ";
+        chomp(my $cont = lc(<STDIN>));
+        if ($cont ne "y") {
+            print "Exiting...";
+            exit;
+        }
+    }
 
     ## Define our CSV reader object if not already defined
     $csv ||= Text::CSV->new({ sep_char => "$col{'sep'}"});
