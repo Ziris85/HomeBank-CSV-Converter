@@ -1,5 +1,9 @@
 # HomeBank-CSV-Converter
-Perl script to convert a CSV file containing transactions from your banking institution into a HomeBank-friendly format.
+For use with the opensource HomeBank personal accounting software: http://homebank.free.fr/. Their online documentation can be found [here](http://homebank.free.fr/help/index.html).
+
+(Tested against **HomeBank v5.3.1**)
+
+This is a perl script to convert a CSV file containing transactions from your banking institution into a HomeBank-friendly format.
 
 This script does not attempt to make decisions for the user (with the exception of **autopay** - see below), does not require the user to create complex definition files to do the conversion process, nor does it only function with certain banking institutions. As long as your bank can export your transactions into a valid CSV format, then this script should be able to work with it.
 
@@ -33,7 +37,8 @@ These options simply tweak the default behavior of the script, if necessary (say
 | --output=s | Name of file to output results to (default: <input_file_name> + -homebank-exported.csv) |
 | --sep=s | Separator to your CSV file (default: ,) |
 | --header=[Y\|n] | Specify whether your CSV file contains a header (defaut: n) |
-| --autopay=[Y\|#] | Enable automatic detection of payment codes. This can also be defined as a code, in which case ALL transactions in your CSV will be marked with said code.
+| --autopay=[Y\|#] | Enable automatic detection of payment codes. This can also be defined as a code, in which case ALL transactions in your CSV will be marked with said code. |
+
 #### Examples
 Let us say that the users CSV file has a format like so:
 
@@ -58,4 +63,5 @@ This is a rudimentary feature that was added to give the script a simple means o
 | 8 | Deposit |
 | 9 | Fee |
 | 10 | Direct Debit |
-Use of this feature is generally _not recommended_, at least not on its own. It's recommended that the user either user this feature in conjunction with the **Automatic Assignment** feature (http://homebank.free.fr/help/use-auto_assign.html)[documented here], or use **Automatic Assignment** exclusively, as it allows fine-grained control over categorization of transactions during import, and will likely generate better results tailored to the user.
+
+Use of this feature is generally _not recommended_, at least not on its own. It's recommended that the user either user this feature in conjunction with the **Automatic Assignment** feature [documented here](http://homebank.free.fr/help/use-auto_assign.html), or use **Automatic Assignment** exclusively, as it allows fine-grained control over categorization of transactions during import, and will likely generate better results tailored to the user.
