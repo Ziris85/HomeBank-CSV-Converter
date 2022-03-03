@@ -1,7 +1,7 @@
 # HomeBank-CSV-Converter
 For use with the opensource HomeBank personal accounting software: http://homebank.free.fr/. Their online documentation can be found [here](http://homebank.free.fr/help/index.html).
 
-(Tested against **HomeBank v5.3.1**)
+(Tested against **HomeBank v5.5.4**)
 
 This is a perl script to convert a CSV file containing transactions from your banking institution into a HomeBank-friendly format.
 
@@ -57,6 +57,7 @@ This is a rudimentary feature that was added to give the script a simple means o
 | 2 | Check |
 | 3 | Cash |
 | 4 | Bank Transfer |
+| 5 | NOT AVAILBLE ([source](http://homebank.free.fr/help/misc-csvformat.html)) |
 | 6 | Debit Card |
 | 7 | Standing Order |
 | 8 | Electronic Payment |
