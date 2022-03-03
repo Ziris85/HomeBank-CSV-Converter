@@ -57,11 +57,11 @@ This is a rudimentary feature that was added to give the script a simple means o
 | 2 | Check |
 | 3 | Cash |
 | 4 | Bank Transfer |
-| 5 | Debit Card |
-| 6 | Standing Order |
-| 7 | Electronic Payment |
-| 8 | Deposit |
-| 9 | Fee |
-| 10 | Direct Debit |
+| 6 | Debit Card |
+| 7 | Standing Order |
+| 8 | Electronic Payment |
+| 9 | Deposit |
+| 10 | Fee |
+| 11 | Direct Debit |
 
 Use of this feature is generally _not recommended_, at least not on its own. It's recommended that the user either user this feature in conjunction with the **Automatic Assignment** feature [documented here](http://homebank.free.fr/help/use-auto_assign.html), or use **Automatic Assignment** exclusively, as it allows fine-grained control over categorization of transactions during import, and will likely generate better results tailored to the user.
